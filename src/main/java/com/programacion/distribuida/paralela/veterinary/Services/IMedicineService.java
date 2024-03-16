@@ -7,5 +7,4 @@ public interface IMedicineService {
 
     public ResponseEntity<MedicineResponseRest> search();
 
-
 }
