@@ -8,5 +8,5 @@ public interface IMedicineService {
     public ResponseEntity<MedicineResponseRest> search();
     public ResponseEntity<MedicineResponseRest> searchById(Long id);
     public ResponseEntity<MedicineResponseRest> save(Medicine medicine);
-
+    public ResponseEntity<MedicineResponseRest> update(Medicine medicine, Long id);
 }

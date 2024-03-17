@@ -93,6 +93,44 @@ public class MedicineServiceImpl implements IMedicineService {
             exception.getStackTrace();
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<MedicineResponseRest>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<MedicineResponseRest> update(Medicine medicine, Long id) {
+        MedicineResponseRest response = new MedicineResponseRest();
+        List<Medicine> medicines = new ArrayList<>();
+
+        try {
+            Optional<Medicine> medicineSearch = medicineDao.findById(id);
+
+            if (medicineSearch.isPresent()) {
+                medicineSearch.get().setName(medicine.getName());
+                medicineSearch.get().setDescription(medicine.getDescription());
+                medicineSearch.get().setDose(medicine.getDose());
+
+                Medicine medicineToUpdate = medicineDao.save(medicineSearch.get());
+
+                if (medicineToUpdate != null) {
+                    medicines.add(medicineToUpdate);
+                    response.getMedicineResponse().setMedicines(medicines);
+                    response.setMetadata(RESPONSE_OK, "200", "Medicine update");
+                }else {
+                    response.setMetadata(RESPONSE_ERROR, "400", "Medicine not update");
+                    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                }
+
+            } else {
+                response.setMetadata(RESPONSE_ERROR, "404", "Medicine not found, is not possible update");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
+        } catch (Exception exception) {
+            response.setMetadata(RESPONSE_ERROR, "500", "Error update medicine");
+            exception.getStackTrace();
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

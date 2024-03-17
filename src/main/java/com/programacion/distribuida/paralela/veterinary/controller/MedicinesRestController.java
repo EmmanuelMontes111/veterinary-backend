@@ -29,4 +29,9 @@ public class MedicinesRestController {
         return service.save(medicine);
     }
 
+    @PutMapping("/medicines/{id}")
+    public ResponseEntity<MedicineResponseRest> update(@RequestBody Medicine medicine, @PathVariable Long id) {
+        return service.update(medicine, id);
+    }
+
 }
