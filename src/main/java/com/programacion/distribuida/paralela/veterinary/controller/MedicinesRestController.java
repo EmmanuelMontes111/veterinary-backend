@@ -34,4 +34,9 @@ public class MedicinesRestController {
         return service.update(medicine, id);
     }
 
+    @DeleteMapping("/medicines/{id}")
+    public ResponseEntity<MedicineResponseRest> delete( @PathVariable Long id) {
+        return service.deleteById(id);
+    }
+
 }

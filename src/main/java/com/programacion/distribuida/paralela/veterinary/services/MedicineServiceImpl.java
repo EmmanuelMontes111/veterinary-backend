@@ -47,7 +47,7 @@ public class MedicineServiceImpl implements IMedicineService {
     public ResponseEntity<MedicineResponseRest> searchById(Long id) {
 
         MedicineResponseRest response = new MedicineResponseRest();
-        List<Medicine> medicines = (List<Medicine>) medicineDao.findAll();
+        List<Medicine> medicines = new ArrayList<>();
 
         try {
             Optional<Medicine> medicineOptional = medicineDao.findById(id);
@@ -116,7 +116,7 @@ public class MedicineServiceImpl implements IMedicineService {
                     medicines.add(medicineToUpdate);
                     response.getMedicineResponse().setMedicines(medicines);
                     response.setMetadata(RESPONSE_OK, "200", "Medicine update");
-                }else {
+                } else {
                     response.setMetadata(RESPONSE_ERROR, "400", "Medicine not update");
                     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
                 }
@@ -128,6 +128,29 @@ public class MedicineServiceImpl implements IMedicineService {
 
         } catch (Exception exception) {
             response.setMetadata(RESPONSE_ERROR, "500", "Error update medicine");
+            exception.getStackTrace();
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MedicineResponseRest> deleteById(Long id) {
+        MedicineResponseRest response = new MedicineResponseRest();
+
+        try {
+            Optional<Medicine> medicineSearch = medicineDao.findById(id);
+
+            if (medicineSearch.isPresent()) {
+                medicineDao.deleteById(id);
+                response.setMetadata(RESPONSE_OK, "200", "Medicine Delete by id: " + id);
+            } else {
+                response.setMetadata(RESPONSE_ERROR, "404", "Medicine not found, is not possible delete");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
+        } catch (Exception exception) {
+            response.setMetadata(RESPONSE_ERROR, "500", "Error delete medicine");
             exception.getStackTrace();
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
