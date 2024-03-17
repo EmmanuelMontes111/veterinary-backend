@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ public class MedicineServiceImpl implements IMedicineService {
 
     public static final String RESPONSE_ERROR = "Response ERROR";
     public static final String ID_NOT_FOUND = "ID NOT FOUND";
+    public static final String RESPONSE_OK = "Response OK";
     @Autowired
     private IMedicineDao medicineDao;
 
@@ -30,7 +32,7 @@ public class MedicineServiceImpl implements IMedicineService {
             List<Medicine> medicines = (List<Medicine>) medicineDao.findAll();
 
             response.getMedicineResponse().setMedicines(medicines);
-            response.setMetadata("Response OK", "200", "Response success");
+            response.setMetadata(RESPONSE_OK, "200", "Response success");
 
         } catch (Exception exception) {
             response.setMetadata(RESPONSE_ERROR, "500", "Response failed");
@@ -53,18 +55,44 @@ public class MedicineServiceImpl implements IMedicineService {
             if (medicineOptional.isPresent()) {
                 medicines.add(medicineOptional.get());
                 response.getMedicineResponse().setMedicines(medicines);
-                response.setMetadata("Response OK", "200", "Medicine found");
+                response.setMetadata(RESPONSE_OK, "200", "Medicine found");
             } else {
                 response.setMetadata(ID_NOT_FOUND, "404", "Medicine not found");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
 
         } catch (Exception exception) {
-            response.setMetadata(RESPONSE_ERROR, "500", "Error al condultar por id");
+            response.setMetadata(RESPONSE_ERROR, "500", "Error when querying by id");
             exception.getStackTrace();
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<MedicineResponseRest> save(Medicine medicine) {
+        MedicineResponseRest response = new MedicineResponseRest();
+        List<Medicine> medicines = new ArrayList<>();
+
+        try {
+            Medicine medicineSaved = medicineDao.save(medicine);
+
+            if (medicineSaved != null) {
+                medicines.add(medicine);
+                response.getMedicineResponse().setMedicines(medicines);
+                response.setMetadata(RESPONSE_OK, "200", "Medicine save");
+            } else {
+                response.setMetadata(RESPONSE_ERROR, "400", "Medicine not save");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (Exception exception) {
+            response.setMetadata(RESPONSE_ERROR, "500", "Error save medicine");
+            exception.getStackTrace();
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<MedicineResponseRest>(response, HttpStatus.OK);
     }
 }
