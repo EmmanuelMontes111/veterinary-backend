@@ -1,12 +1,13 @@
-package com.programacion.distribuida.paralela.veterinary.controller;
+package com.programacion.distribuida.paralela.veterinary.controller.medicines;
 
 import com.programacion.distribuida.paralela.veterinary.model.Medicine;
-import com.programacion.distribuida.paralela.veterinary.response.MedicineResponseRest;
-import com.programacion.distribuida.paralela.veterinary.services.IMedicineService;
+import com.programacion.distribuida.paralela.veterinary.response.medicine.MedicineResponseRest;
+import com.programacion.distribuida.paralela.veterinary.services.medicine.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/v1")
 public class MedicinesRestController {

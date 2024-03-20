@@ -1,8 +1,8 @@
-package com.programacion.distribuida.paralela.veterinary.services;
+package com.programacion.distribuida.paralela.veterinary.services.medicine;
 
 import com.programacion.distribuida.paralela.veterinary.dao.IMedicineDao;
 import com.programacion.distribuida.paralela.veterinary.model.Medicine;
-import com.programacion.distribuida.paralela.veterinary.response.MedicineResponseRest;
+import com.programacion.distribuida.paralela.veterinary.response.medicine.MedicineResponseRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

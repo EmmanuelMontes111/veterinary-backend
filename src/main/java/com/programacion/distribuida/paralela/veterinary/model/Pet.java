@@ -1,7 +1,8 @@
 package com.programacion.distribuida.paralela.veterinary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,20 +14,21 @@ public class Pet implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pet_id")
     private Long id;
     private String name;
     private String breed;
     private int age;
     private float weight;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Client client;
-
-    @ManyToMany
+    @OneToMany
     @JoinTable(
             name = "pet_medicine",
             joinColumns = @JoinColumn(name = "pet_id"),
-            inverseJoinColumns = @JoinColumn(name = "medicine_id"))
+            inverseJoinColumns = @JoinColumn(name = "medicine_id")
+    )
     private List<Medicine> medicines;
+
 }

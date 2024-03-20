@@ -1,7 +1,7 @@
 package com.programacion.distribuida.paralela.veterinary.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +14,7 @@ public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long clientId;
     private String name;
     private String lastName;
     private String residenceAddress;
