@@ -45,9 +45,23 @@ public class PetsRestController {
     }
 
     @PutMapping("/pets/{id}")
-    public ResponseEntity<PetResponseRest> update(@RequestBody Pet client, @PathVariable Long id) {
-        return service.update(client, id);
+    public ResponseEntity<PetResponseRest> update(
+            @RequestParam String name,
+            @RequestParam String breed,
+            @RequestParam int age,
+            @RequestParam float weight,
+            @RequestParam Long clientId,
+            @RequestParam Long id) throws IOException {
+
+        Pet pet = new Pet();
+        pet.setName(name);
+        pet.setBreed(breed);
+        pet.setAge(age);
+        pet.setWeight(weight);
+
+        return service.update(pet, clientId, id);
     }
+
 
     @DeleteMapping("/pets/{id}")
     public ResponseEntity<PetResponseRest> delete(@PathVariable Long id) {

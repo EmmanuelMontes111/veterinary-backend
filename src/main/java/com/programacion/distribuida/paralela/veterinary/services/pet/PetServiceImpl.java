@@ -118,18 +118,33 @@ public class PetServiceImpl implements IPetService {
 
     @Override
     @Transactional
-    public ResponseEntity<PetResponseRest> update(Pet pet, Long id) {
+    public ResponseEntity<PetResponseRest> update(Pet pet, Long clientId, Long id) {
         PetResponseRest response = new PetResponseRest();
         List<Pet> pets = new ArrayList<>();
 
         try {
+            Optional<Client> clientOptional = clientDao.findById(clientId);
+
+            if (clientOptional.isPresent()) {
+                pet.setClient(clientOptional.get());
+            } else {
+                //Si no existe el cliente no puedo actualizar la mascota
+                response.setMetadata(RESPONSE_ERROR, "404", "Client not found");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+
+            //Bucar mascota a actualizar
+
             Optional<Pet> petSearch = petDao.findById(id);
 
+
             if (petSearch.isPresent()) {
+                //se actaliza la mascota
                 petSearch.get().setName(pet.getName());
-                petSearch.get().setBreed(pet.getBreed());
-                petSearch.get().setAge(pet.getAge());
                 petSearch.get().setWeight(pet.getWeight());
+                petSearch.get().setAge(pet.getAge());
+                petSearch.get().setBreed(pet.getBreed());
+
 
                 Pet petToUpdate = petDao.save(petSearch.get());
 
