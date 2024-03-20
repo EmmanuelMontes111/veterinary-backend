@@ -80,13 +80,13 @@ public class PetServiceImpl implements IPetService {
 
     @Override
     @Transactional
-    public ResponseEntity<PetResponseRest> save(Pet pet, Long clientId) {
+    public ResponseEntity<PetResponseRest> save(Pet pet) {
         PetResponseRest response = new PetResponseRest();
         List<Pet> pets = new ArrayList<>();
 
         try {
             //buscar cliente para setearla en la mascota
-            Optional<Client> client = clientDao.findById(clientId);
+            Optional<Client> client = clientDao.findById(pet.getClient().getId());
 
             if (client.isPresent()) {
                 pet.setClient(client.get());

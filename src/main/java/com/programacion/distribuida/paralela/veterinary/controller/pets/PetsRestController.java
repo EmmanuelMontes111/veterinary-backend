@@ -1,5 +1,6 @@
 package com.programacion.distribuida.paralela.veterinary.controller.pets;
 
+import com.programacion.distribuida.paralela.veterinary.model.Medicine;
 import com.programacion.distribuida.paralela.veterinary.model.Pet;
 import com.programacion.distribuida.paralela.veterinary.response.pet.PetResponseRest;
 import com.programacion.distribuida.paralela.veterinary.services.pet.IPetService;
@@ -28,20 +29,9 @@ public class PetsRestController {
     }
 
     @PostMapping("/pets")
-    public ResponseEntity<PetResponseRest> save(
-            @RequestParam String name,
-            @RequestParam String breed,
-            @RequestParam int age,
-            @RequestParam float weight,
-            @RequestParam Long clientId) throws IOException {
+    public ResponseEntity<PetResponseRest> save(@RequestBody Pet pet) throws IOException {
 
-        Pet pet = new Pet();
-        pet.setName(name);
-        pet.setBreed(breed);
-        pet.setAge(age);
-        pet.setWeight(weight);
-
-        return service.save(pet, clientId);
+        return service.save(pet);
     }
 
     @PutMapping("/pets/{id}")

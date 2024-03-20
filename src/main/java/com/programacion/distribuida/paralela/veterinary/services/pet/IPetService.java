@@ -9,7 +9,7 @@ public interface IPetService {
 
     public ResponseEntity<PetResponseRest> searchById(Long id);
 
-    public ResponseEntity<PetResponseRest> save(Pet pet, Long clientId);
+    public ResponseEntity<PetResponseRest> save(Pet pet);
 
     public ResponseEntity<PetResponseRest> update(Pet pet, Long clientId, Long id);
 

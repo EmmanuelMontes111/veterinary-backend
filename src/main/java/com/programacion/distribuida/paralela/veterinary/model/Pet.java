@@ -21,7 +21,7 @@ public class Pet implements Serializable {
     private int age;
     private float weight;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Client client;
     @OneToMany
     @JoinTable(
